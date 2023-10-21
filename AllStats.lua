@@ -44,8 +44,18 @@ MyButton:SetScript("OnClick", function(self)
 		texture3:Show()
 		texture4:Show()
 		texture5:Show()
+		AllStatsFrameLabelStats:Show()
+		AllStatsFrameLabelMelee:Show()
+		AllStatsFrameLabelRange:Show()
+		AllStatsFrameLabelSpell:Show()
+		AllStatsFrameLabelDefense:Show()
         self:SetNormalTexture("Interface\\BUTTONS\\UI-SpellbookIcon-PrevPage-Up")
 		self:SetPushedTexture("Interface\\BUTTONS\\UI-SpellbookIcon-PrevPage-Down")
+		MagicResFrame1:Show()
+		MagicResFrame2:Show()
+		MagicResFrame3:Show()
+		MagicResFrame4:Show()
+		MagicResFrame5:Show()
     else
         AllStatsFrame:Hide()
 		 MyFrame:Hide()
@@ -54,8 +64,18 @@ MyButton:SetScript("OnClick", function(self)
 		texture3:Hide()
 		texture4:Hide()
 		texture5:Hide()
+		AllStatsFrameLabelStats:Hide()
+		AllStatsFrameLabelMelee:Hide()
+		AllStatsFrameLabelRange:Hide()
+		AllStatsFrameLabelSpell:Hide()
+		AllStatsFrameLabelDefense:Hide()
         self:SetNormalTexture("Interface\\BUTTONS\\UI-SpellbookIcon-NextPage-Up")
 		self:SetPushedTexture("Interface\\BUTTONS\\UI-SpellbookIcon-NextPage-Down")
+		MagicResFrame1:Hide()
+		MagicResFrame2:Hide()
+		MagicResFrame3:Hide()
+		MagicResFrame4:Hide()
+		MagicResFrame5:Hide()
     end
     showTooltip(self) -- Update the tooltip
 end)
@@ -72,7 +92,7 @@ MyFrame:SetSize(currentWidth / (1.9 * currentScale), currentHeight / (1 * curren
 MyFrame:SetPoint("TOPLEFT", "CharacterFrame", "TOPRIGHT", -34, -26)
 MyFrame:SetFrameStrata("BACKGROUND")
 -- MyFrame:Hide() -- Hide initially
-
+--[[
 -- Create Scroll Frame
 local scrollFrame = CreateFrame("ScrollFrame", "scrollFrame", MyFrame, "UIPanelScrollFrameTemplate")
 scrollFrame:SetSize(currentWidth / (1.9 * currentScale), 411)
@@ -87,14 +107,31 @@ scrollFrame:SetParent(MyFrame)
 scrollFrame:SetScrollChild(ContentFrame)
 
 
--- Hook to dynamically show/hide the scrollbar
+--- Create ScrollBar
+local scrollbar = CreateFrame("Slider", nil, scrollFrame, "UIPanelScrollBarTemplate")
+scrollbar:SetPoint("TOPLEFT", scrollFrame, "TOPRIGHT", 4, -16)
+scrollbar:SetPoint("BOTTOMLEFT", scrollFrame, "BOTTOMRIGHT", 4, 16)
+scrollbar:SetMinMaxValues(1, 200)
+scrollbar:SetValueStep(1)
+scrollbar.scrollStep = 1
+scrollbar:SetValue(0)
+scrollbar:SetWidth(16)
+scrollbar:SetScript("OnValueChanged", function (self, value)
+    self:GetParent():SetVerticalScroll(value)
+end)
+
+-- Update your OnScrollRangeChanged Hook
 scrollFrame:HookScript("OnScrollRangeChanged", function(self, xrange, yrange)
+    local minValue, maxValue = scrollbar:GetMinMaxValues()
     if floor(yrange) ~= 0 then
-        self.ScrollBar:Show()
+        scrollbar:SetMinMaxValues(minValue, floor(yrange))
+        scrollbar:Show()
     else
-        self.ScrollBar:Hide()
+        scrollbar:Hide()
     end
 end)
+
+
 
 -- Create Scroll Bar Styling
 local scrollbarName = scrollFrame:GetName()
@@ -106,150 +143,259 @@ _G[scrollbarName.."ScrollBar"]:SetBackdrop({
   edgeSize = 16,
   insets = { left = 4, right = 4, top = 4, bottom = 4 }
 })
+]]
 
--- Create the texture for this frame
+-- Bottom Right
 local tframe = MyFrame:CreateTexture(nil, "ARTWORK")
 tframe:SetTexture("Interface\\PaperDollInfoFrame\\UI-Character-General-BottomRight")
-tframe:SetPoint("BOTTOM", MyFrame, "BOTTOM", 28, 24)
+tframe:SetPoint("BOTTOM", Defenses, "BOTTOM", -267.5, 77)
 
+-- Top Right
 local tframe2 = MyFrame:CreateTexture(nil, "ARTWORK")
 tframe2:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight.blp")
-tframe2:SetPoint("TOP", MyFrame, "TOP", 28, 87)
+tframe2:SetPoint("TOP", MyFrame, "TOP", 20, 87)
 
+-- Middle Right
 local tframe3 = MyFrame:CreateTexture(nil, "ARTWORK")
 tframe3:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight1.blp")
-tframe3:SetPoint("TOP", MyFrame, "TOP", 28, 20)
+tframe3:SetPoint("TOP", MyFrame, "TOP", 20, -80)
 
+local tframe3bis = MyFrame:CreateTexture(nil, "ARTWORK")
+tframe3bis:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight1.blp")
+tframe3bis:SetPoint("TOP", MyFrame, "TOP", 20, -160)
+
+-- Bottom Left
 local tframe4 = MyFrame:CreateTexture(nil, "ARTWORK")
-tframe4:SetTexture("Interface\\PaperDollInfoFrame\\UI-Character-General-BottomLeft")
-tframe4:SetPoint("BOTTOM", MyFrame, "BOTTOM", -100, 24)
+tframe4:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-middleLeft2.blp")
+-- tframe4:SetTexture("Interface\\PaperDollInfoFrame\\UI-Character-General-BottomLeft")
+tframe4:SetPoint("BOTTOM", Defenses, "BOTTOM", -370, 77)
 
+-- Middle Left
 local tframe5 = MyFrame:CreateTexture(nil, "ARTWORK")
 tframe5:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-middleLeft.blp")
-tframe5:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 250)
+tframe5:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 180)
 
+-- Middle Left
+local tframe5bis = MyFrame:CreateTexture(nil, "ARTWORK")
+tframe5bis:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-middleLeft.blp")
+tframe5bis:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 100)
+
+-- Top Left
 local tframe6 = MyFrame:CreateTexture(nil, "ARTWORK")
 tframe6:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight2.blp")
 tframe6:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 343)
 
 
 
-function PrintStats()
-	local str = AllStatsFrameStat1;
-	local agi = AllStatsFrameStat2;
-	local sta = AllStatsFrameStat3;
-	local int = AllStatsFrameStat4;
-	local spi = AllStatsFrameStat5;
-
-	local md = AllStatsFrameStatMeleeDamage;
-	local ms = AllStatsFrameStatMeleeSpeed;
-	local mp = AllStatsFrameStatMeleePower;
-	local mh = AllStatsFrameStatMeleeHit;
-	local mc = AllStatsFrameStatMeleeCrit;
-	local me = AllStatsFrameStatMeleeExpert;
-
-	local rd = AllStatsFrameStatRangeDamage;
-	local rs = AllStatsFrameStatRangeSpeed;
-	local rp = AllStatsFrameStatRangePower;
-	local rh = AllStatsFrameStatRangeHit;
-	local rc = AllStatsFrameStatRangeCrit;
-
-	local sd = AllStatsFrameStatSpellDamage;
-	local she = AllStatsFrameStatSpellHeal;
-	local shi = AllStatsFrameStatSpellHit;
-	local sc = AllStatsFrameStatSpellCrit;
-	local sha = AllStatsFrameStatSpellHaste;
-	local sr = AllStatsFrameStatSpellRegen;
-
-	local armor = AllStatsFrameStatArmor;
-	local def = AllStatsFrameStatDefense;
-	local dodge = AllStatsFrameStatDodge;
-	local parry = AllStatsFrameStatParry;
-	local block = AllStatsFrameStatBlock;
-	local res = AllStatsFrameStatResil;
-
-
-	PaperDollFrame_SetStat(str, 1);
-	PaperDollFrame_SetStat(agi, 2);
-	PaperDollFrame_SetStat(sta, 3);
-	PaperDollFrame_SetStat(int, 4);
-	PaperDollFrame_SetStat(spi, 5);
-
-	PaperDollFrame_SetDamage(md);
-	md:SetScript("OnEnter", CharacterDamageFrame_OnEnter);
-	PaperDollFrame_SetAttackSpeed(ms);
-	PaperDollFrame_SetAttackPower(mp);
-	PaperDollFrame_SetRating(mh, CR_HIT_MELEE);
-	PaperDollFrame_SetMeleeCritChance(mc);
-	PaperDollFrame_SetExpertise(me);
-
-	PaperDollFrame_SetRangedDamage(rd);
-	rd:SetScript("OnEnter", CharacterRangedDamageFrame_OnEnter);
-	PaperDollFrame_SetRangedAttackSpeed(rs);
-	PaperDollFrame_SetRangedAttackPower(rp);
-	PaperDollFrame_SetRating(rh, CR_HIT_RANGED);
-	PaperDollFrame_SetRangedCritChance(rc);
-
-	PaperDollFrame_SetSpellBonusDamage(sd);
-	sd:SetScript("OnEnter", CharacterSpellBonusDamage_OnEnter);
-	PaperDollFrame_SetSpellBonusHealing(she);
-	PaperDollFrame_SetRating(shi, CR_HIT_SPELL);
-	PaperDollFrame_SetSpellCritChance(sc);
-	sc:SetScript("OnEnter", CharacterSpellCritChance_OnEnter);
-	PaperDollFrame_SetSpellHaste(sha);
-	PaperDollFrame_SetManaRegen(sr);
-
-	PaperDollFrame_SetArmor(armor);
-	PaperDollFrame_SetDefense(def);
-	PaperDollFrame_SetDodge(dodge);
-	PaperDollFrame_SetParry(parry);
-	PaperDollFrame_SetBlock(block);
-	PaperDollFrame_SetResilience(res);
-end
-
-local AllStatsShowFrame = true;
-
-function AllStatsButtonShowFrame_OnClick()
-	AllStatsShowFrame = not AllStatsShowFrame;
-	if AllStatsShowFrame then
-		AllStatsFrame:Show();
-	else
-		AllStatsFrame:Hide();
-	end
-end
 
 
 
+
+-- BaseStat
 local BaseStat = MyFrame:CreateTexture(nil, "OVERLAY")
 BaseStat:SetSize(140, 22)
 BaseStat:SetTexture("Interface\\AddOns\\AllStats\\PaperDollInfoPart1.blp")
-BaseStat:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, 0)
+BaseStat:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, 5)
 BaseStat:SetTexCoord(0, 0.7734375, 0.453125, 0.6015625)
 
+-- Create the BaseStatsText frame
+local BaseStatsText = CreateFrame("Frame", "BaseStatsText", UIParent, "StatFrameTemplate")
+BaseStatsText:SetID(0)
+BaseStatsText:EnableMouse(false)
+-- Set the anchor for the BaseStatsText frame
+BaseStatsText:SetPoint("TOPLEFT", BaseStat, "TOPLEFT", 38, -3)
+
+-- Create a FontString within the BaseStatsText frame
+local AllStatsFrameLabelStats = BaseStatsText:CreateFontString("AllStatsFrameLabelStats", "BACKGROUND", "GameFontHighlightSmall")
+-- Set the text for the FontString
+AllStatsFrameLabelStats:SetText("Base Stats")
+local fontPath, _, fontFlags = AllStatsFrameLabelStats:GetFont()
+AllStatsFrameLabelStats:SetFont(fontPath, 13, fontFlags)
+-- Set the position of the FontString
+AllStatsFrameLabelStats:SetPoint("BOTTOM", BaseStatsText, "TOP", 1, -16)
+
+-- Create an invisible button frame on top of your texture
+local clickableFrame = CreateFrame("Button", nil, MyFrame)
+clickableFrame:SetSize(180, 22)
+clickableFrame:SetPoint("TOPLEFT", BaseStat, "TOPLEFT", -20, 0)
+clickableFrame:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight")
+-- Optional: Add tooltip or cursor change for better UX
+clickableFrame:SetScript("OnEnter", function()
+    GameTooltip:SetOwner(clickableFrame, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:Show()
+end)
+clickableFrame:SetScript("OnLeave", function()
+    GameTooltip:Hide()
+end)
+clickableFrame:RegisterForClicks("AnyUp")
+
+-- Melee
 local Melee = MyFrame:CreateTexture(nil, "OVERLAY")
 Melee:SetSize(140, 22)
 Melee:SetTexture("Interface\\AddOns\\AllStats\\PaperDollInfoPart1.blp")
-Melee:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -97)
+Melee:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -93)
 Melee:SetTexCoord(0, 0.7734375, 0.453125, 0.6015625)
 
+-- Create the MeleeText frame
+local MeleeText = CreateFrame("Frame", "MeleeText", UIParent, "StatFrameTemplate")
+MeleeText:SetID(0)
+MeleeText:EnableMouse(false)
+-- Set the anchor for the MeleeText frame
+MeleeText:SetPoint("TOPLEFT", Melee, "TOPLEFT", 38, -3)
+
+-- Create a FontString within the MeleeText frame
+local AllStatsFrameLabelMelee = MeleeText:CreateFontString("AllStatsFrameLabelMelee", "BACKGROUND", "GameFontHighlightSmall")
+-- Set the text for the FontString
+AllStatsFrameLabelMelee:SetText("Melee")
+local fontPath, _, fontFlags = AllStatsFrameLabelMelee:GetFont()
+AllStatsFrameLabelMelee:SetFont(fontPath, 13, fontFlags)
+-- Set the position of the FontString
+AllStatsFrameLabelMelee:SetPoint("BOTTOM", MeleeText, "TOP", 1, -16)
+
+-- Create an invisible button frame on top of your texture
+local clickableFrame2 = CreateFrame("Button", nil, MyFrame)
+clickableFrame2:SetSize(180, 22)
+clickableFrame2:SetPoint("TOPLEFT", Melee, "TOPLEFT", -20, 0)
+clickableFrame2:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight")
+
+-- Optional: Add tooltip or cursor change for better UX
+clickableFrame2:SetScript("OnEnter", function()
+    GameTooltip:SetOwner(clickableFrame2, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:Show()
+end)
+clickableFrame2:SetScript("OnLeave", function()
+    GameTooltip:Hide()
+end)
+clickableFrame2:RegisterForClicks("AnyUp")
+
+-- Ranged
 local Ranged = MyFrame:CreateTexture(nil, "OVERLAY")
 Ranged:SetSize(140, 22)
 Ranged:SetTexture("Interface\\AddOns\\AllStats\\PaperDollInfoPart1.blp")
-Ranged:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -207)
+Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -111)
 Ranged:SetTexCoord(0, 0.7734375, 0.453125, 0.6015625)
 
+-- Create the RangedText frame
+local RangedText = CreateFrame("Frame", "RangedText", UIParent, "StatFrameTemplate")
+RangedText:SetID(0)
+RangedText:EnableMouse(false)
+-- Set the anchor for the RangedText frame
+RangedText:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 38, -3)
+
+-- Create a FontString within the RangedText frame
+local AllStatsFrameLabelRange = RangedText:CreateFontString("AllStatsFrameLabelRange", "BACKGROUND", "GameFontHighlightSmall")
+-- Set the text for the FontString
+AllStatsFrameLabelRange:SetText("Ranged")
+local fontPath, _, fontFlags = AllStatsFrameLabelRange:GetFont()
+AllStatsFrameLabelRange:SetFont(fontPath, 13, fontFlags)
+-- Set the position of the FontString
+AllStatsFrameLabelRange:SetPoint("BOTTOM", RangedText, "TOP", 1, -16)
+
+-- Create an invisible button frame on top of your texture
+local clickableFrame3 = CreateFrame("Button", nil, MyFrame)
+clickableFrame3:SetSize(180, 22)
+clickableFrame3:SetPoint("TOPLEFT", Ranged, "TOPLEFT", -20, 0)
+clickableFrame3:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight")
+
+-- Optional: Add tooltip or cursor change for better UX
+clickableFrame3:SetScript("OnEnter", function()
+    GameTooltip:SetOwner(clickableFrame3, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:Show()
+end)
+clickableFrame3:SetScript("OnLeave", function()
+    GameTooltip:Hide()
+end)
+clickableFrame3:RegisterForClicks("AnyUp")
+
+-- Spell
 local Spell = MyFrame:CreateTexture(nil, "OVERLAY")
 Spell:SetSize(140, 22)
 Spell:SetTexture("Interface\\AddOns\\AllStats\\PaperDollInfoPart1.blp")
-Spell:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -302)
+Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -92)
 Spell:SetTexCoord(0, 0.7734375, 0.453125, 0.6015625)
 
+-- Create the SpellText frame
+local SpellText = CreateFrame("Frame", "SpellText", UIParent, "StatFrameTemplate")
+SpellText:SetID(0)
+SpellText:EnableMouse(false)
+-- Set the anchor for the SpellText frame
+SpellText:SetPoint("TOPLEFT", Spell, "TOPLEFT", 38, -3)
+
+-- Create a FontString within the SpellText frame
+local AllStatsFrameLabelSpell = SpellText:CreateFontString("AllStatsFrameLabelSpell", "BACKGROUND", "GameFontHighlightSmall")
+-- Set the text for the FontString
+AllStatsFrameLabelSpell:SetText("Spell")
+local fontPath, _, fontFlags = AllStatsFrameLabelSpell:GetFont()
+AllStatsFrameLabelSpell:SetFont(fontPath, 13, fontFlags)
+-- Set the position of the FontString
+AllStatsFrameLabelSpell:SetPoint("BOTTOM", SpellText, "TOP", 1, -16)
+
+-- Create an invisible button frame on top of your texture
+local clickableFrame4 = CreateFrame("Button", nil, MyFrame)
+clickableFrame4:SetSize(180, 22)
+clickableFrame4:SetPoint("TOPLEFT", Spell, "TOPLEFT", -20, 0)
+clickableFrame4:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight")
+
+-- Optional: Add tooltip or cursor change for better UX
+clickableFrame4:SetScript("OnEnter", function()
+    GameTooltip:SetOwner(clickableFrame4, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:Show()
+end)
+clickableFrame4:SetScript("OnLeave", function()
+    GameTooltip:Hide()
+end)
+clickableFrame4:RegisterForClicks("AnyUp")
+
+-- Defenses
 local Defenses = MyFrame:CreateTexture(nil, "OVERLAY")
 Defenses:SetSize(140, 22)
 Defenses:SetTexture("Interface\\AddOns\\AllStats\\PaperDollInfoPart1.blp")
-Defenses:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -410)
+Defenses:SetPoint("TOPLEFT", Spell, "TOPLEFT", 0, -110)
 Defenses:SetTexCoord(0, 0.7734375, 0.453125, 0.6015625)
 
+-- Create the DefensesText frame
+local DefensesText = CreateFrame("Frame", "DefensesText", UIParent, "StatFrameTemplate")
+DefensesText:SetID(0)
+DefensesText:EnableMouse(false)
+-- Set the anchor for the DefensesText frame
+DefensesText:SetPoint("TOPLEFT", Defenses, "TOPLEFT", 38, -3)
+
+-- Create a FontString within the DefensesText frame
+local AllStatsFrameLabelDefense = DefensesText:CreateFontString("AllStatsFrameLabelDefense", "BACKGROUND", "GameFontHighlightSmall")
+-- Set the text for the FontString
+AllStatsFrameLabelDefense:SetText("Defenses")
+local fontPath, _, fontFlags = AllStatsFrameLabelDefense:GetFont()
+AllStatsFrameLabelDefense:SetFont(fontPath, 13, fontFlags)
+-- Set the position of the FontString
+AllStatsFrameLabelDefense:SetPoint("BOTTOM", DefensesText, "TOP", 1, -16)
+
+-- Create an invisible button frame on top of your texture
+local clickableFrame5 = CreateFrame("Button", nil, MyFrame)
+clickableFrame5:SetSize(180, 22)
+clickableFrame5:SetPoint("TOPLEFT", Defenses, "TOPLEFT", -20, 0)
+clickableFrame5:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight")
+
+-- Optional: Add tooltip or cursor change for better UX
+clickableFrame5:SetScript("OnEnter", function()
+    GameTooltip:SetOwner(clickableFrame5, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:Show()
+end)
+clickableFrame5:SetScript("OnLeave", function()
+    GameTooltip:Hide()
+end)
+clickableFrame5:RegisterForClicks("AnyUp")
+
+for i=1,5 do _G["MagicResFrame" .. i]:SetScale(0.8)end
+MagicResFrame1:SetPoint("TOPLEFT", Defenses, "TOPLEFT", 10, -25)
+MagicResFrame2:SetPoint("TOPLEFT", Defenses, "TOPLEFT", 40, -25)
+MagicResFrame3:SetPoint("TOPLEFT", Defenses, "TOPLEFT", 70, -25)
+MagicResFrame4:SetPoint("TOPLEFT", Defenses, "TOPLEFT", 100, -25)
+MagicResFrame5:SetPoint("TOPLEFT", Defenses, "TOPLEFT", 130, -25)
 local function ShowOrHideTexture()
     if PaperDollFrame:IsVisible() then
         texture:Show()
@@ -258,16 +404,22 @@ local function ShowOrHideTexture()
 		texture4:Show()
 		texture5:Show()
 		BaseStat:Show()
+		AllStatsFrameLabelStats:Show()
 		Melee:Show()
+		AllStatsFrameLabelMelee:Show()
 		Ranged:Show()
+		AllStatsFrameLabelRange:Show()
 		Spell:Show()
+		AllStatsFrameLabelSpell:Show()
 		Defenses:Show()
+		AllStatsFrameLabelDefense:Show()
 		tframe:Show()
 		tframe2:Show()
 		tframe3:Show()
 		tframe4:Show()
 		tframe5:Show()
 		tframe6:Show()
+		
     else
         texture:Hide()
 		texture2:Hide()
@@ -275,10 +427,15 @@ local function ShowOrHideTexture()
 		texture4:Hide()
 		texture5:Hide()
 		BaseStat:Hide()
+		AllStatsFrameLabelStats:Hide()
 		Melee:Hide()
+		AllStatsFrameLabelMelee:Hide()
 		Ranged:Hide()
+		AllStatsFrameLabelRange:Hide()
 		Spell:Hide()
+		AllStatsFrameLabelSpell:Hide()
 		Defenses:Hide()
+		AllStatsFrameLabelDefense:Hide()
 		tframe:Hide()
 		tframe2:Hide()
 		tframe3:Hide()
@@ -429,40 +586,40 @@ local function OnEvent(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == "AllStats" then
         if AllStatsFrame then
             frame1 = CreateFrame("Frame", "MyNewFrame", UIParent)
-            frame1:SetSize(135, 100)
-            frame1:SetPoint("TOPLEFT", AllStatsFrameTop, "BOTTOMLEFT", 25, 3)
+            frame1:SetSize(135, 102)
+            frame1:SetPoint("TOPLEFT", BaseStat, "BOTTOMLEFT", 25, 2)
 
             texture = frame1:CreateTexture(nil, "BACKGROUND")
             texture:SetAllPoints(frame1)
             texture:Hide()  -- Hide it by default
             
 			frame2 = CreateFrame("Frame", "MyNewFrame2", UIParent)
-            frame2:SetSize(135, 115)
-            frame2:SetPoint("TOPLEFT", AllStatsFrameTop, "BOTTOMLEFT", 25, -125)
+            frame2:SetSize(135, 120)
+            frame2:SetPoint("TOPLEFT", Melee, "BOTTOMLEFT", 25, 2)
 			
 			texture2 = frame2:CreateTexture(nil, "BACKGROUND")
             texture2:SetAllPoints(frame2)
             texture2:Hide()
 			
 			frame3 = CreateFrame("Frame", "MyNewFrame3", UIParent)
-            frame3:SetSize(135, 100)
-            frame3:SetPoint("TOPLEFT", AllStatsFrameTop, "BOTTOMLEFT", 25, -264)
+            frame3:SetSize(135, 96)
+            frame3:SetPoint("TOPLEFT", Ranged, "BOTTOMLEFT", 25, 2)
 			
 			texture3 = frame3:CreateTexture(nil, "BACKGROUND")
             texture3:SetAllPoints(frame3)
             texture3:Hide()
 			
 			frame4 = CreateFrame("Frame", "MyNewFrame4", UIParent)
-            frame4:SetSize(135, 115)
-            frame4:SetPoint("TOPLEFT", AllStatsFrameTop, "BOTTOMLEFT", 25, -388)
+            frame4:SetSize(135, 119)
+            frame4:SetPoint("TOPLEFT", Spell, "BOTTOMLEFT", 25, 2)
 			
 			texture4 = frame4:CreateTexture(nil, "BACKGROUND")
             texture4:SetAllPoints(frame4)
             texture4:Hide()
 			
 			frame5 = CreateFrame("Frame", "MyNewFrame5", UIParent)
-            frame5:SetSize(135, 115)
-            frame5:SetPoint("TOPLEFT", AllStatsFrameTop, "BOTTOMLEFT", 25, -530)
+            frame5:SetSize(135, 118)
+            frame5:SetPoint("TOPLEFT", Defenses, "BOTTOMLEFT", 25, -26)
 			
 			texture5 = frame5:CreateTexture(nil, "BACKGROUND")
             texture5:SetAllPoints(frame5)
@@ -497,6 +654,342 @@ eventFrame:RegisterEvent('PLAYER_LOGIN')
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 eventFrame:SetScript("OnEvent", OnEvent)
 
+local function Meleecollapse()
+end
+clickableFrame:SetScript("OnClick", function(self, button)
+	if button == "RightButton" then
+        if texture:IsVisible() then
+			texture:Hide()
+		else
+			if AllStatsFrameStat1:IsVisible() then
+				texture:Show()
+			else
+				texture:Hide()
+			end
+		end
+	elseif button == "LeftButton" then
+		if AllStatsFrameStat1:IsVisible() then
+			texture:Hide()
+			AllStatsFrameStat1:Hide()
+			AllStatsFrameStat2:Hide()
+			AllStatsFrameStat3:Hide()
+			AllStatsFrameStat4:Hide()
+			AllStatsFrameStat5:Hide()
+			Melee:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -14)
+			AllStatsFrameStatMeleeDamage:SetPoint("TOPLEFT", AllStatsFrameStat5, "BOTTOMLEFT", 0, 56)
+		else
+			texture:Show()
+			AllStatsFrameStat1:Show()
+			AllStatsFrameStat2:Show()
+			AllStatsFrameStat3:Show()
+			AllStatsFrameStat4:Show()
+			AllStatsFrameStat5:Show()
+			Melee:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -93)
+			AllStatsFrameStatMeleeDamage:SetPoint("TOPLEFT", AllStatsFrameStat5, "BOTTOMLEFT", 0, -24)
+		end
+	end
+end)
 
-		
+clickableFrame2:SetScript("OnClick", function(self, button)
+	if button == "RightButton" then
+        if texture2:IsVisible() then
+			texture2:Hide()
+		else
+			if AllStatsFrameStatMeleeDamage:IsVisible() then
+				texture2:Show()
+			else
+				texture2:Hide()
+			end
+		end
+	elseif button == "LeftButton" then
+		if AllStatsFrameStatMeleeDamage:IsVisible() then
+			texture2:Hide()
+			AllStatsFrameStatMeleeDamage:Hide()
+			AllStatsFrameStatMeleeSpeed:Hide()
+			AllStatsFrameStatMeleePower:Hide()
+			AllStatsFrameStatMeleeHit:Hide()
+			AllStatsFrameStatMeleeCrit:Hide()
+			AllStatsFrameStatMeleeExpert:Hide()
+			Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -19)
+			AllStatsFrameStatRangeDamage:SetPoint("TOPLEFT", AllStatsFrameStatMeleeExpert, "BOTTOMLEFT", 0, 70)
+		else
+			texture2:Show()
+			AllStatsFrameStatMeleeDamage:Show()
+			AllStatsFrameStatMeleeSpeed:Show()
+			AllStatsFrameStatMeleePower:Show()
+			AllStatsFrameStatMeleeHit:Show()
+			AllStatsFrameStatMeleeCrit:Show()
+			AllStatsFrameStatMeleeExpert:Show()
+			Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -111)
+			AllStatsFrameStatRangeDamage:SetPoint("TOPLEFT", AllStatsFrameStatMeleeExpert, "BOTTOMLEFT", 0, -21.5)
+		end
+    end
+end)
+
+clickableFrame3:SetScript("OnClick", function(self, button)
+	if button == "RightButton" then
+        if texture3:IsVisible() then
+			texture3:Hide()
+		else
+			if AllStatsFrameStatRangeDamage:IsVisible() then
+				texture3:Show()
+			else
+				texture3:Hide()
+			end
+		end
+	elseif button == "LeftButton" then
+		if AllStatsFrameStatRangeDamage:IsVisible() then
+			texture3:Hide()
+			AllStatsFrameStatRangeDamage:Hide()
+			AllStatsFrameStatRangeSpeed:Hide()
+			AllStatsFrameStatRangePower:Hide()
+			AllStatsFrameStatRangeHit:Hide()
+			AllStatsFrameStatRangeCrit:Hide()
+			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -19)
+			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, 52)
+		else
+			texture3:Show()
+			AllStatsFrameStatRangeDamage:Show()
+			AllStatsFrameStatRangeSpeed:Show()
+			AllStatsFrameStatRangePower:Show()
+			AllStatsFrameStatRangeHit:Show()
+			AllStatsFrameStatRangeCrit:Show()
+			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -92)
+			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, -21)
+		end
+    end
+end)
+
+clickableFrame4:SetScript("OnClick", function(self, button)
+	if button == "RightButton" then
+        if texture4:IsVisible() then
+			texture4:Hide()
+		else
+			if AllStatsFrameStatSpellDamage:IsVisible() then
+				texture4:Show()
+			else
+				texture4:Hide()
+			end
+		end
+	elseif button == "LeftButton" then
+		if AllStatsFrameStatSpellDamage:IsVisible() then
+			texture4:Hide()
+			AllStatsFrameStatSpellDamage:Hide()
+			AllStatsFrameStatSpellHeal:Hide()
+			AllStatsFrameStatSpellHit:Hide()
+			AllStatsFrameStatSpellCrit:Hide()
+			AllStatsFrameStatSpellHaste:Hide()
+			AllStatsFrameStatSpellRegen:Hide()
+			Defenses:SetPoint("TOPLEFT", Spell, "TOPLEFT", 0, -19)
+			AllStatsFrameStatArmor:SetPoint("TOPLEFT", AllStatsFrameStatSpellRegen, "BOTTOMLEFT", 0, 45)
+		else
+			texture4:Show()
+			AllStatsFrameStatSpellDamage:Show()
+			AllStatsFrameStatSpellHeal:Show()
+			AllStatsFrameStatSpellHit:Show()
+			AllStatsFrameStatSpellCrit:Show()
+			AllStatsFrameStatSpellHaste:Show()
+			AllStatsFrameStatSpellRegen:Show()
+			Defenses:SetPoint("TOPLEFT", Spell, "TOPLEFT", 0, -110)
+			AllStatsFrameStatArmor:SetPoint("TOPLEFT", AllStatsFrameStatSpellRegen, "BOTTOMLEFT", 0, -45)
+		end
+    end
+end)
+
+clickableFrame5:SetScript("OnClick", function(self, button)
+	if button == "RightButton" then
+        if texture5:IsVisible() then
+			texture5:Hide()
+		else
+			if AllStatsFrameStatArmor:IsVisible() then
+				texture5:Show()
+			else
+				texture5:Hide()
+			end
+		end
+	elseif button == "LeftButton" then
+		if AllStatsFrameStatArmor:IsVisible() then
+			texture5:Hide()
+			AllStatsFrameStatArmor:Hide()
+			AllStatsFrameStatDefense:Hide()
+			AllStatsFrameStatDodge:Hide()
+			AllStatsFrameStatParry:Hide()
+			AllStatsFrameStatBlock:Hide()
+			AllStatsFrameStatResil:Hide()
+		else
+			texture5:Show()
+			AllStatsFrameStatArmor:Show()
+			AllStatsFrameStatDefense:Show()
+			AllStatsFrameStatDodge:Show()
+			AllStatsFrameStatParry:Show()
+			AllStatsFrameStatBlock:Show()
+			AllStatsFrameStatResil:Show()
+		end
+    end
+end)
+
+function PrintStats()
+	local str = AllStatsFrameStat1;
+	local agi = AllStatsFrameStat2;
+	local sta = AllStatsFrameStat3;
+	local int = AllStatsFrameStat4;
+	local spi = AllStatsFrameStat5;
+
+	local md = AllStatsFrameStatMeleeDamage;
+	local ms = AllStatsFrameStatMeleeSpeed;
+	local mp = AllStatsFrameStatMeleePower;
+	local mh = AllStatsFrameStatMeleeHit;
+	local mc = AllStatsFrameStatMeleeCrit;
+	local me = AllStatsFrameStatMeleeExpert;
+
+	local rd = AllStatsFrameStatRangeDamage;
+	local rs = AllStatsFrameStatRangeSpeed;
+	local rp = AllStatsFrameStatRangePower;
+	local rh = AllStatsFrameStatRangeHit;
+	local rc = AllStatsFrameStatRangeCrit;
+
+	local sd = AllStatsFrameStatSpellDamage;
+	local she = AllStatsFrameStatSpellHeal;
+	local shi = AllStatsFrameStatSpellHit;
+	local sc = AllStatsFrameStatSpellCrit;
+	local sha = AllStatsFrameStatSpellHaste;
+	local sr = AllStatsFrameStatSpellRegen;
+
+	local armor = AllStatsFrameStatArmor;
+	local def = AllStatsFrameStatDefense;
+	local dodge = AllStatsFrameStatDodge;
+	local parry = AllStatsFrameStatParry;
+	local block = AllStatsFrameStatBlock;
+	local res = AllStatsFrameStatResil;
+
+
+	PaperDollFrame_SetStat(str, 1);
+	PaperDollFrame_SetStat(agi, 2);
+	PaperDollFrame_SetStat(sta, 3);
+	PaperDollFrame_SetStat(int, 4);
+	PaperDollFrame_SetStat(spi, 5);
+
+	PaperDollFrame_SetDamage(md);
+	md:SetScript("OnEnter", CharacterDamageFrame_OnEnter);
+	PaperDollFrame_SetAttackSpeed(ms);
+	PaperDollFrame_SetAttackPower(mp);
+	PaperDollFrame_SetRating(mh, CR_HIT_MELEE);
+	PaperDollFrame_SetMeleeCritChance(mc);
+	PaperDollFrame_SetExpertise(me);
+
+	PaperDollFrame_SetRangedDamage(rd);
+	rd:SetScript("OnEnter", CharacterRangedDamageFrame_OnEnter);
+	PaperDollFrame_SetRangedAttackSpeed(rs);
+	PaperDollFrame_SetRangedAttackPower(rp);
+	PaperDollFrame_SetRating(rh, CR_HIT_RANGED);
+	PaperDollFrame_SetRangedCritChance(rc);
+
+	PaperDollFrame_SetSpellBonusDamage(sd);
+	sd:SetScript("OnEnter", CharacterSpellBonusDamage_OnEnter);
+	PaperDollFrame_SetSpellBonusHealing(she);
+	PaperDollFrame_SetRating(shi, CR_HIT_SPELL);
+	PaperDollFrame_SetSpellCritChance(sc);
+	sc:SetScript("OnEnter", CharacterSpellCritChance_OnEnter);
+	PaperDollFrame_SetSpellHaste(sha);
+	PaperDollFrame_SetManaRegen(sr);
+
+	PaperDollFrame_SetArmor(armor);
+	PaperDollFrame_SetDefense(def);
+	PaperDollFrame_SetDodge(dodge);
+	PaperDollFrame_SetParry(parry);
+	PaperDollFrame_SetBlock(block);
+	PaperDollFrame_SetResilience(res);
+	
+	if not AllStatsFrameStat1:IsVisible() then
+			texture:Hide()
+			AllStatsFrameStat1:Hide()
+			AllStatsFrameStat2:Hide()
+			AllStatsFrameStat3:Hide()
+			AllStatsFrameStat4:Hide()
+			AllStatsFrameStat5:Hide()
+			Melee:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -14)
+			AllStatsFrameStatMeleeDamage:SetPoint("TOPLEFT", AllStatsFrameStat5, "BOTTOMLEFT", 0, 56)
+		else
+			texture:Show()
+			AllStatsFrameStat1:Show()
+			AllStatsFrameStat2:Show()
+			AllStatsFrameStat3:Show()
+			AllStatsFrameStat4:Show()
+			AllStatsFrameStat5:Show()
+			Melee:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -93)
+			AllStatsFrameStatMeleeDamage:SetPoint("TOPLEFT", AllStatsFrameStat5, "BOTTOMLEFT", 0, -24)
+		end
+	if not AllStatsFrameStatMeleeDamage:IsVisible() then
+			texture2:Hide()
+			AllStatsFrameStatMeleeDamage:Hide()
+			AllStatsFrameStatMeleeSpeed:Hide()
+			AllStatsFrameStatMeleePower:Hide()
+			AllStatsFrameStatMeleeHit:Hide()
+			AllStatsFrameStatMeleeCrit:Hide()
+			AllStatsFrameStatMeleeExpert:Hide()
+			Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -19)
+			AllStatsFrameStatRangeDamage:SetPoint("TOPLEFT", AllStatsFrameStatMeleeExpert, "BOTTOMLEFT", 0, 70)
+		else
+			texture2:Show()
+			AllStatsFrameStatMeleeDamage:Show()
+			AllStatsFrameStatMeleeSpeed:Show()
+			AllStatsFrameStatMeleePower:Show()
+			AllStatsFrameStatMeleeHit:Show()
+			AllStatsFrameStatMeleeCrit:Show()
+			AllStatsFrameStatMeleeExpert:Show()
+			Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -111)
+			AllStatsFrameStatRangeDamage:SetPoint("TOPLEFT", AllStatsFrameStatMeleeExpert, "BOTTOMLEFT", 0, -21.5)
+		end
+	if not AllStatsFrameStatRangeDamage:IsVisible() then
+			texture3:Hide()
+			AllStatsFrameStatRangeDamage:Hide()
+			AllStatsFrameStatRangeSpeed:Hide()
+			AllStatsFrameStatRangePower:Hide()
+			AllStatsFrameStatRangeHit:Hide()
+			AllStatsFrameStatRangeCrit:Hide()
+			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -19)
+			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, 52)
+		else
+			texture3:Show()
+			AllStatsFrameStatRangeDamage:Show()
+			AllStatsFrameStatRangeSpeed:Show()
+			AllStatsFrameStatRangePower:Show()
+			AllStatsFrameStatRangeHit:Show()
+			AllStatsFrameStatRangeCrit:Show()
+			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -92)
+			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, -21)
+		end
+	if not AllStatsFrameStatSpellDamage:IsVisible() then
+			texture4:Hide()
+			AllStatsFrameStatSpellDamage:Hide()
+			AllStatsFrameStatSpellHeal:Hide()
+			AllStatsFrameStatSpellHit:Hide()
+			AllStatsFrameStatSpellCrit:Hide()
+			AllStatsFrameStatSpellHaste:Hide()
+			AllStatsFrameStatSpellRegen:Hide()
+			Defenses:SetPoint("TOPLEFT", Spell, "TOPLEFT", 0, -19)
+			AllStatsFrameStatArmor:SetPoint("TOPLEFT", AllStatsFrameStatSpellRegen, "BOTTOMLEFT", 0, 45)
+		else
+			texture4:Show()
+			AllStatsFrameStatSpellDamage:Show()
+			AllStatsFrameStatSpellHeal:Show()
+			AllStatsFrameStatSpellHit:Show()
+			AllStatsFrameStatSpellCrit:Show()
+			AllStatsFrameStatSpellHaste:Show()
+			AllStatsFrameStatSpellRegen:Show()
+			Defenses:SetPoint("TOPLEFT", Spell, "TOPLEFT", 0, -110)
+			AllStatsFrameStatArmor:SetPoint("TOPLEFT", AllStatsFrameStatSpellRegen, "BOTTOMLEFT", 0, -45)
+		end
+end
+
+local AllStatsShowFrame = true;
+
+function AllStatsButtonShowFrame_OnClick()
+	AllStatsShowFrame = not AllStatsShowFrame;
+	if AllStatsShowFrame then
+		AllStatsFrame:Show();
+	else
+		AllStatsFrame:Hide();
+	end
+end
 -- Todo MacroFrame and PlayerTalentFrame to move when character frame is open
