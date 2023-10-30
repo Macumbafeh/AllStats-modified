@@ -13,6 +13,7 @@ end
 function NewPaperDollFrame_UpdateStats()
 	PrintStats();
 end
+
 local isExtended = true
 -- Create Button
 local MyButton = CreateFrame("Button", nil, PaperDollFrame)
@@ -30,55 +31,7 @@ local function showTooltip(self)
     GameTooltip:Show()
 end
 
-MyButton:SetScript("OnEnter", showTooltip)
-MyButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
--- Button OnClick Function
-MyButton:SetScript("OnClick", function(self)
-    isExtended = not isExtended
-    if isExtended then
-        AllStatsFrame:Show()
-		 MyFrame:Show()
-		 texture:Show()
-		texture2:Show()
-		texture3:Show()
-		texture4:Show()
-		texture5:Show()
-		AllStatsFrameLabelStats:Show()
-		AllStatsFrameLabelMelee:Show()
-		AllStatsFrameLabelRange:Show()
-		AllStatsFrameLabelSpell:Show()
-		AllStatsFrameLabelDefense:Show()
-        self:SetNormalTexture("Interface\\BUTTONS\\UI-SpellbookIcon-PrevPage-Up")
-		self:SetPushedTexture("Interface\\BUTTONS\\UI-SpellbookIcon-PrevPage-Down")
-		MagicResFrame1:Show()
-		MagicResFrame2:Show()
-		MagicResFrame3:Show()
-		MagicResFrame4:Show()
-		MagicResFrame5:Show()
-    else
-        AllStatsFrame:Hide()
-		 MyFrame:Hide()
-		 texture:Hide()
-		texture2:Hide()
-		texture3:Hide()
-		texture4:Hide()
-		texture5:Hide()
-		AllStatsFrameLabelStats:Hide()
-		AllStatsFrameLabelMelee:Hide()
-		AllStatsFrameLabelRange:Hide()
-		AllStatsFrameLabelSpell:Hide()
-		AllStatsFrameLabelDefense:Hide()
-        self:SetNormalTexture("Interface\\BUTTONS\\UI-SpellbookIcon-NextPage-Up")
-		self:SetPushedTexture("Interface\\BUTTONS\\UI-SpellbookIcon-NextPage-Down")
-		MagicResFrame1:Hide()
-		MagicResFrame2:Hide()
-		MagicResFrame3:Hide()
-		MagicResFrame4:Hide()
-		MagicResFrame5:Hide()
-    end
-    showTooltip(self) -- Update the tooltip
-end)
 
 -- Create Additional Frame (Replace this with your ScrollFrame if needed)
 	local currentScale = CharacterFrame:GetScale()
@@ -90,7 +43,7 @@ local MyFrame = CreateFrame("Frame", "MyFrame", CharacterFrame)
 MyFrame:ClearAllPoints()
 MyFrame:SetSize(currentWidth / (1.9 * currentScale), currentHeight / (1 * currentScale))
 MyFrame:SetPoint("TOPLEFT", "CharacterFrame", "TOPRIGHT", -34, -26)
-MyFrame:SetFrameStrata("BACKGROUND")
+MyFrame:SetFrameStrata("LOW")
 -- MyFrame:Hide() -- Hide initially
 --[[
 -- Create Scroll Frame
@@ -145,45 +98,6 @@ _G[scrollbarName.."ScrollBar"]:SetBackdrop({
 })
 ]]
 
--- Bottom Right
-local tframe = MyFrame:CreateTexture(nil, "ARTWORK")
-tframe:SetTexture("Interface\\PaperDollInfoFrame\\UI-Character-General-BottomRight")
-tframe:SetPoint("BOTTOM", Defenses, "BOTTOM", -267.5, 77)
-
--- Top Right
-local tframe2 = MyFrame:CreateTexture(nil, "ARTWORK")
-tframe2:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight.blp")
-tframe2:SetPoint("TOP", MyFrame, "TOP", 20, 87)
-
--- Middle Right
-local tframe3 = MyFrame:CreateTexture(nil, "ARTWORK")
-tframe3:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight1.blp")
-tframe3:SetPoint("TOP", MyFrame, "TOP", 20, -80)
-
-local tframe3bis = MyFrame:CreateTexture(nil, "ARTWORK")
-tframe3bis:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight1.blp")
-tframe3bis:SetPoint("TOP", MyFrame, "TOP", 20, -160)
-
--- Bottom Left
-local tframe4 = MyFrame:CreateTexture(nil, "ARTWORK")
-tframe4:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-middleLeft2.blp")
--- tframe4:SetTexture("Interface\\PaperDollInfoFrame\\UI-Character-General-BottomLeft")
-tframe4:SetPoint("BOTTOM", Defenses, "BOTTOM", -370, 77)
-
--- Middle Left
-local tframe5 = MyFrame:CreateTexture(nil, "ARTWORK")
-tframe5:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-middleLeft.blp")
-tframe5:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 180)
-
--- Middle Left
-local tframe5bis = MyFrame:CreateTexture(nil, "ARTWORK")
-tframe5bis:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-middleLeft.blp")
-tframe5bis:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 100)
-
--- Top Left
-local tframe6 = MyFrame:CreateTexture(nil, "ARTWORK")
-tframe6:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight2.blp")
-tframe6:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 343)
 
 
 
@@ -390,6 +304,139 @@ clickableFrame5:SetScript("OnLeave", function()
 end)
 clickableFrame5:RegisterForClicks("AnyUp")
 
+-- Textures behind
+
+-- Bottom Right
+local DefenseFrame2 = CreateFrame("Frame", "DefenseFrame2", UIParent)
+DefenseFrame2:SetSize(currentWidth / (2.2 * currentScale), currentHeight / (1.3 * currentScale))
+DefenseFrame2:SetPoint("TOPLEFT", Defenses, "BOTTOMLEFT", 68.5, 120)
+DefenseFrame2:SetFrameStrata("LOW")
+
+local tframe = DefenseFrame2:CreateTexture(nil, "ARTWORK")
+tframe:SetTexture("Interface\\PaperDollInfoFrame\\UI-Character-General-BottomRight")
+-- tframe:SetPoint("BOTTOM", MyFrame, "BOTTOM", 20, -37)
+tframe:SetAllPoints(DefenseFrame2)
+
+-- Top Right
+local tframe2 = MyFrame:CreateTexture(nil, "ARTWORK")
+tframe2:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight.blp")
+tframe2:SetPoint("TOP", MyFrame, "TOP", 20, 87)
+
+
+-- Middle Right
+local DefenseFrame3 = CreateFrame("Frame", "DefenseFrame3", UIParent)
+DefenseFrame3:SetSize(currentWidth / (2.2 * currentScale), currentHeight / (1.3 * currentScale))
+DefenseFrame3:SetPoint("TOPLEFT", Ranged, "BOTTOMLEFT", 68.5, 210)
+DefenseFrame3:SetFrameStrata("LOW")
+
+local tframe3 = DefenseFrame3:CreateTexture(nil, "ARTWORK")
+tframe3:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight1.blp")
+-- tframe3:SetPoint("TOP", MyFrame, "TOP", 20, -80)
+tframe3:SetAllPoints(DefenseFrame3)
+
+-- Middle Right
+--[[local tframe3bis = MyFrame:CreateTexture(nil, "ARTWORK")
+tframe3bis:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight1.blp")
+tframe3bis:SetPoint("TOP", MyFrame, "TOP", 20, -160)]]
+
+-- Bottom Left
+local DefenseFrame = CreateFrame("Frame", "DefenseFrame", UIParent)
+DefenseFrame:SetSize(currentWidth / (2.2 * currentScale), currentHeight / (1.3 * currentScale))
+DefenseFrame:SetPoint("TOPLEFT", Defenses, "BOTTOMLEFT", -65, 120)
+DefenseFrame:SetFrameStrata("LOW")
+
+local tframe4 = DefenseFrame:CreateTexture(nil, "ARTWORK")
+tframe4:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-middleLeft2.blp")
+-- tframe4:SetTexture("Interface\\PaperDollInfoFrame\\UI-Character-General-BottomLeft")
+-- tframe4:SetPoint("BOTTOM", DefenseFrame, "BOTTOM", -80, -37)
+tframe4:SetAllPoints(DefenseFrame)
+
+-- Middle Left
+-- Middle Right
+local DefenseFrame5 = CreateFrame("Frame", "DefenseFrame5", UIParent)
+DefenseFrame5:SetSize(currentWidth / (2.2 * currentScale), currentHeight / (1.3 * currentScale))
+DefenseFrame5:SetPoint("TOPLEFT", Ranged, "BOTTOMLEFT", 0, 210)
+DefenseFrame5:SetFrameStrata("LOW")
+
+local tframe5 = DefenseFrame5:CreateTexture(nil, "ARTWORK")
+tframe5:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-middleLeft.blp")
+-- tframe5:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 180)
+tframe5:SetAllPoints(DefenseFrame5)
+
+-- Middle Left
+--[[local tframe5bis = MyFrame:CreateTexture(nil, "ARTWORK")
+tframe5bis:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-middleLeft.blp")
+tframe5bis:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 100)]]
+
+-- Top Left
+local tframe6 = MyFrame:CreateTexture(nil, "ARTWORK")
+tframe6:SetTexture("Interface\\AddOns\\AllStats\\UI-Character-General-BottomRight2.blp")
+tframe6:SetPoint("BOTTOM", MyFrame, "BOTTOM", -50, 343)
+
+
+MyButton:SetScript("OnEnter", showTooltip)
+MyButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+-- Button OnClick Function
+MyButton:SetScript("OnClick", function(self)
+    isExtended = not isExtended
+    if isExtended then
+        AllStatsFrame:Show()
+		 MyFrame:Show()
+		 texture:Show()
+		texture2:Show()
+		texture3:Show()
+		texture4:Show()
+		texture5:Show()
+		AllStatsFrameLabelStats:Show()
+		AllStatsFrameLabelMelee:Show()
+		AllStatsFrameLabelRange:Show()
+		AllStatsFrameLabelSpell:Show()
+		AllStatsFrameLabelDefense:Show()
+        self:SetNormalTexture("Interface\\BUTTONS\\UI-SpellbookIcon-PrevPage-Up")
+		self:SetPushedTexture("Interface\\BUTTONS\\UI-SpellbookIcon-PrevPage-Down")
+		MagicResFrame1:Show()
+		MagicResFrame2:Show()
+		MagicResFrame3:Show()
+		MagicResFrame4:Show()
+		MagicResFrame5:Show()
+		tframe:Show()
+		tframe2:Show()
+		tframe3:Show()
+		tframe4:Show()
+		tframe5:Show()
+		tframe6:Show()
+    else
+        AllStatsFrame:Hide()
+		 MyFrame:Hide()
+		 texture:Hide()
+		texture2:Hide()
+		texture3:Hide()
+		texture4:Hide()
+		texture5:Hide()
+		AllStatsFrameLabelStats:Hide()
+		AllStatsFrameLabelMelee:Hide()
+		AllStatsFrameLabelRange:Hide()
+		AllStatsFrameLabelSpell:Hide()
+		AllStatsFrameLabelDefense:Hide()
+        self:SetNormalTexture("Interface\\BUTTONS\\UI-SpellbookIcon-NextPage-Up")
+		self:SetPushedTexture("Interface\\BUTTONS\\UI-SpellbookIcon-NextPage-Down")
+		MagicResFrame1:Hide()
+		MagicResFrame2:Hide()
+		MagicResFrame3:Hide()
+		MagicResFrame4:Hide()
+		MagicResFrame5:Hide()
+		tframe:Hide()
+		tframe2:Hide()
+		tframe3:Hide()
+		tframe4:Hide()
+		tframe5:Hide()
+		tframe6:Hide()
+    end
+    showTooltip(self) -- Update the tooltip
+end)
+
+
 for i=1,5 do _G["MagicResFrame" .. i]:SetScale(0.8)end
 MagicResFrame1:SetPoint("TOPLEFT", Defenses, "TOPLEFT", 10, -25)
 MagicResFrame2:SetPoint("TOPLEFT", Defenses, "TOPLEFT", 40, -25)
@@ -400,7 +447,9 @@ local function ShowOrHideTexture()
     if PaperDollFrame:IsVisible() then
         texture:Show()
 		texture2:Show()
+		if AllStatsFrameStatRangeDamage:IsVisible() then
 		texture3:Show()
+		end
 		texture4:Show()
 		texture5:Show()
 		BaseStat:Show()
@@ -451,15 +500,15 @@ local function UpdateTexture(texture)
 
     -- Your mapping from class and spec to texture
     local textureMap = {
-        WARRIOR = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorArms-TopLeft.blp",
-        SHAMAN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\ShamanRestoration-TopLeft.blp",
-		PALADIN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\PaladinProtection-TopLeft.blp",
-        HUNTER = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterBeastMastery-TopLeft.blp",
-		ROGUE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\RogueSubtlety-TopLeft.blp",
-        MAGE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\MageArcane-TopLeft.blp",
-		WARLOCK = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarlockSummoning-TopLeft.blp",
-        PRIEST = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\PriestDiscipline-TopLeft.blp",
-		DRUID = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\DruidBalance-TopLeft.blp",
+        WARRIOR = "Interface\\AddOns\\AllStats\\Talent\\WarriorArms-TopLeft.blp",
+        SHAMAN = "Interface\\AddOns\\AllStats\\Talent\\ShamanRestoration-TopLeft.blp",
+		PALADIN = "Interface\\AddOns\\AllStats\\Talent\\PaladinProtection-TopLeft.blp",
+        HUNTER = "Interface\\AddOns\\AllStats\\Talent\\HunterBeastMastery-TopLeft.blp",
+		ROGUE = "Interface\\AddOns\\AllStats\\Talent\\RogueSubtlety-TopLeft.blp",
+        MAGE = "Interface\\AddOns\\AllStats\\Talent\\MageArcane-TopLeft.blp",
+		WARLOCK = "Interface\\AddOns\\AllStats\\Talent\\WarlockSummoning-TopLeft.blp",
+        PRIEST = "Interface\\AddOns\\AllStats\\Talent\\PriestDiscipline-TopLeft.blp",
+		DRUID = "Interface\\AddOns\\AllStats\\Talent\\DruidBalance-TopLeft.blp",
         -- etc.
     }
 
@@ -478,15 +527,15 @@ local function UpdateTexture2(texture2)
 
     -- Your mapping from class and spec to texture
     local textureMap2 = {
-        WARRIOR = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorFury-TopLeft.blp",
-        SHAMAN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\ShamanElementalCombat-TopLeft.blp",
-		PALADIN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\PaladinCombat-TopLeft.blp",
-        HUNTER = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterSurvival-TopLeft.blp",
-		ROGUE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\RogueAssassination-TopLeft.blp",
-        MAGE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\MageFire-TopLeft.blp",
-		WARLOCK = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarlockCurses-TopLeft.blp",
-        PRIEST = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\PriestHoly-TopLeft.blp",
-		DRUID = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\DruidFeralCombat-TopLeft.blp",
+        WARRIOR = "Interface\\AddOns\\AllStats\\Talent\\WarriorFury-TopLeft.blp",
+        SHAMAN = "Interface\\AddOns\\AllStats\\Talent\\ShamanElementalCombat-TopLeft.blp",
+		PALADIN = "Interface\\AddOns\\AllStats\\Talent\\PaladinCombat-TopLeft.blp",
+        HUNTER = "Interface\\AddOns\\AllStats\\Talent\\HunterSurvival-TopLeft.blp",
+		ROGUE = "Interface\\AddOns\\AllStats\\Talent\\RogueAssassination-TopLeft.blp",
+        MAGE = "Interface\\AddOns\\AllStats\\Talent\\MageFire-TopLeft.blp",
+		WARLOCK = "Interface\\AddOns\\AllStats\\Talent\\WarlockCurses-TopLeft.blp",
+        PRIEST = "Interface\\AddOns\\AllStats\\Talent\\PriestHoly-TopLeft.blp",
+		DRUID = "Interface\\AddOns\\AllStats\\Talent\\DruidFeralCombat-TopLeft.blp",
     }
 
 
@@ -505,15 +554,15 @@ local function UpdateTexture3(texture3)
 
     -- Your mapping from class and spec to texture
     local textureMap3 = {
-        WARRIOR = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
-        SHAMAN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
-		PALADIN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
-		HUNTER = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
-		ROGUE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
-        MAGE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
-		WARLOCK = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
-        PRIEST = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
-		DRUID = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
+        WARRIOR = "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
+        SHAMAN = "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
+		PALADIN = "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
+		HUNTER = "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
+		ROGUE = "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
+        MAGE = "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
+		WARLOCK = "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
+        PRIEST = "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
+		DRUID = "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
     }
 
     -- Update the texture
@@ -522,7 +571,7 @@ local function UpdateTexture3(texture3)
 		texture3:SetTexCoord(0.1, 0.9, 0.1, 0.9)
     else
         -- Default texture if class is not found in the map
-        texture3:SetTexture("Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp")
+        texture3:SetTexture("Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp")
     end
 end
 
@@ -531,15 +580,15 @@ local function UpdateTexture4(texture4)
 
     -- Your mapping from class and spec to texture
     local textureMap4 = {
-        WARRIOR = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\ShamanEnhancement-TopLeft.blp",
-        SHAMAN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\ShamanEnhancement-TopLeft.blp",
-		PALADIN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\ShamanEnhancement-TopLeft.blp",
-        HUNTER = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\ShamanEnhancement-TopLeft.blp",
-		ROGUE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\ShamanEnhancement-TopLeft.blp",
-        MAGE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\MageFrost-TopLeft.blp",
-		WARLOCK = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarlockDestruction-TopLeft.blp",
-        PRIEST = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\PriestShadow-TopLeft.blp",
-		DRUID = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\DruidRestoration-TopLeft.blp",
+        WARRIOR = "Interface\\AddOns\\AllStats\\Talent\\ShamanEnhancement-TopLeft.blp",
+        SHAMAN = "Interface\\AddOns\\AllStats\\Talent\\ShamanEnhancement-TopLeft.blp",
+		PALADIN = "Interface\\AddOns\\AllStats\\Talent\\ShamanEnhancement-TopLeft.blp",
+        HUNTER = "Interface\\AddOns\\AllStats\\Talent\\ShamanEnhancement-TopLeft.blp",
+		ROGUE = "Interface\\AddOns\\AllStats\\Talent\\ShamanEnhancement-TopLeft.blp",
+        MAGE = "Interface\\AddOns\\AllStats\\Talent\\MageFrost-TopLeft.blp",
+		WARLOCK = "Interface\\AddOns\\AllStats\\Talent\\WarlockDestruction-TopLeft.blp",
+        PRIEST = "Interface\\AddOns\\AllStats\\Talent\\PriestShadow-TopLeft.blp",
+		DRUID = "Interface\\AddOns\\AllStats\\Talent\\DruidRestoration-TopLeft.blp",
     }
 
 
@@ -549,7 +598,7 @@ local function UpdateTexture4(texture4)
 		texture4:SetTexCoord(0.1, 0.9, 0.1, 0.9)
     else
         -- Default texture if class is not found in the map
-        texture4:SetTexture("Interface\\AddOns\\Fizzle\\Textures\\Talent\\ShamanEnhancement-TopLeft.blp")
+        texture4:SetTexture("Interface\\AddOns\\AllStats\\Talent\\ShamanEnhancement-TopLeft.blp")
     end
 end
 
@@ -558,15 +607,15 @@ local function UpdateTexture5(texture5)
 
     -- Your mapping from class and spec to texture
     local textureMap5 = {
-        WARRIOR = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
-        SHAMAN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
-		PALADIN = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
-		HUNTER = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
-		ROGUE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
-        MAGE = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
-		WARLOCK = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
-        PRIEST = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
-		DRUID = "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
+        WARRIOR = "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
+        SHAMAN = "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
+		PALADIN = "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
+		HUNTER = "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
+		ROGUE = "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
+        MAGE = "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
+		WARLOCK = "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
+        PRIEST = "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
+		DRUID = "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
     }
 
     -- Update the texture
@@ -575,10 +624,10 @@ local function UpdateTexture5(texture5)
 		texture5:SetTexCoord(0.1, 0.9, 0.1, 0.9)
     else
         -- Default texture if class is not found in the map
-        texture5:SetTexture("Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp")
-		-- ranged "Interface\\AddOns\\Fizzle\\Textures\\Talent\\HunterMarksmanship-TopLeft.blp",
-		-- spell "Interface\\AddOns\\Fizzle\\Textures\\Talent\\ShamanEnhancement-TopLeft.blp",
-		-- Defenses "Interface\\AddOns\\Fizzle\\Textures\\Talent\\WarriorProtection-TopLeft.blp",
+        texture5:SetTexture("Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp")
+		-- ranged "Interface\\AddOns\\AllStats\\Talent\\HunterMarksmanship-TopLeft.blp",
+		-- spell "Interface\\AddOns\\AllStats\\Talent\\ShamanEnhancement-TopLeft.blp",
+		-- Defenses "Interface\\AddOns\\AllStats\\Talent\\WarriorProtection-TopLeft.blp",
     end
 end
 
@@ -654,8 +703,7 @@ eventFrame:RegisterEvent('PLAYER_LOGIN')
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 eventFrame:SetScript("OnEvent", OnEvent)
 
-local function Meleecollapse()
-end
+
 clickableFrame:SetScript("OnClick", function(self, button)
 	if button == "RightButton" then
         if texture:IsVisible() then
@@ -678,6 +726,7 @@ clickableFrame:SetScript("OnClick", function(self, button)
 			Melee:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -14)
 			AllStatsFrameStatMeleeDamage:SetPoint("TOPLEFT", AllStatsFrameStat5, "BOTTOMLEFT", 0, 56)
 		else
+			frame1:Show()
 			texture:Show()
 			AllStatsFrameStat1:Show()
 			AllStatsFrameStat2:Show()
@@ -713,6 +762,7 @@ clickableFrame2:SetScript("OnClick", function(self, button)
 			Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -19)
 			AllStatsFrameStatRangeDamage:SetPoint("TOPLEFT", AllStatsFrameStatMeleeExpert, "BOTTOMLEFT", 0, 70)
 		else
+			frame2:Show()
 			texture2:Show()
 			AllStatsFrameStatMeleeDamage:Show()
 			AllStatsFrameStatMeleeSpeed:Show()
@@ -748,6 +798,7 @@ clickableFrame3:SetScript("OnClick", function(self, button)
 			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -19)
 			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, 52)
 		else
+			frame3:Show()
 			texture3:Show()
 			AllStatsFrameStatRangeDamage:Show()
 			AllStatsFrameStatRangeSpeed:Show()
@@ -783,6 +834,7 @@ clickableFrame4:SetScript("OnClick", function(self, button)
 			Defenses:SetPoint("TOPLEFT", Spell, "TOPLEFT", 0, -19)
 			AllStatsFrameStatArmor:SetPoint("TOPLEFT", AllStatsFrameStatSpellRegen, "BOTTOMLEFT", 0, 45)
 		else
+			frame4:Show()
 			texture4:Show()
 			AllStatsFrameStatSpellDamage:Show()
 			AllStatsFrameStatSpellHeal:Show()
@@ -817,6 +869,7 @@ clickableFrame5:SetScript("OnClick", function(self, button)
 			AllStatsFrameStatBlock:Hide()
 			AllStatsFrameStatResil:Hide()
 		else
+			frame5:Show()
 			texture5:Show()
 			AllStatsFrameStatArmor:Show()
 			AllStatsFrameStatDefense:Show()
@@ -827,6 +880,105 @@ clickableFrame5:SetScript("OnClick", function(self, button)
 		end
     end
 end)
+
+local function caster_collapse()
+if AllStatsFrameStatMeleeDamage:IsVisible() then
+	-- Melee
+	frame2:Hide()
+	texture2:Hide()
+	AllStatsFrameStatMeleeDamage:Hide()
+	AllStatsFrameStatMeleeSpeed:Hide()
+	AllStatsFrameStatMeleePower:Hide()
+	AllStatsFrameStatMeleeHit:Hide()
+	AllStatsFrameStatMeleeCrit:Hide()
+	AllStatsFrameStatMeleeExpert:Hide()
+	Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -19)
+	AllStatsFrameStatRangeDamage:SetPoint("TOPLEFT", AllStatsFrameStatMeleeExpert, "BOTTOMLEFT", 0, 70)
+end
+	
+if AllStatsFrameStatRangeDamage:IsVisible() then
+	-- Ranged
+	frame3:Hide()
+	texture3:Hide()
+	AllStatsFrameStatRangeDamage:Hide()
+	AllStatsFrameStatRangeSpeed:Hide()
+	AllStatsFrameStatRangePower:Hide()
+	AllStatsFrameStatRangeHit:Hide()
+	AllStatsFrameStatRangeCrit:Hide()
+	Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -19)
+	AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, 52)
+end
+end
+
+local function melee_collapse()
+	if AllStatsFrameStatRangeDamage:IsVisible() then
+			frame3:Hide()
+			texture3:Hide()
+			AllStatsFrameStatRangeDamage:Hide()
+			AllStatsFrameStatRangeSpeed:Hide()
+			AllStatsFrameStatRangePower:Hide()
+			AllStatsFrameStatRangeHit:Hide()
+			AllStatsFrameStatRangeCrit:Hide()
+			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -19)
+			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, 52)
+	end
+	
+	if AllStatsFrameStatSpellDamage:IsVisible() then
+			frame4:Hide()
+			texture4:Hide()
+			AllStatsFrameStatSpellDamage:Hide()
+			AllStatsFrameStatSpellHeal:Hide()
+			AllStatsFrameStatSpellHit:Hide()
+			AllStatsFrameStatSpellCrit:Hide()
+			AllStatsFrameStatSpellHaste:Hide()
+			AllStatsFrameStatSpellRegen:Hide()
+			Defenses:SetPoint("TOPLEFT", Spell, "TOPLEFT", 0, -19)
+			AllStatsFrameStatArmor:SetPoint("TOPLEFT", Defenses, "BOTTOMLEFT", 18, -23)
+	end
+end
+
+local function hybrid_collapse()
+if AllStatsFrameStatRangeDamage:IsVisible() then
+			frame3:Hide()
+			texture3:Hide()
+			AllStatsFrameStatRangeDamage:Hide()
+			AllStatsFrameStatRangeSpeed:Hide()
+			AllStatsFrameStatRangePower:Hide()
+			AllStatsFrameStatRangeHit:Hide()
+			AllStatsFrameStatRangeCrit:Hide()
+			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -19)
+			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, 52)
+	end
+end
+
+local function hunter_collapse()
+	if AllStatsFrameStatMeleeDamage:IsVisible() then
+		-- Melee
+		frame2:Hide()
+		texture2:Hide()
+		AllStatsFrameStatMeleeDamage:Hide()
+		AllStatsFrameStatMeleeSpeed:Hide()
+		AllStatsFrameStatMeleePower:Hide()
+		AllStatsFrameStatMeleeHit:Hide()
+		AllStatsFrameStatMeleeCrit:Hide()
+		AllStatsFrameStatMeleeExpert:Hide()
+		Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -19)
+		AllStatsFrameStatRangeDamage:SetPoint("TOPLEFT", AllStatsFrameStatMeleeExpert, "BOTTOMLEFT", 0, 70)
+	end
+	
+	if AllStatsFrameStatSpellDamage:IsVisible() then
+			frame4:Hide()
+			texture4:Hide()
+			AllStatsFrameStatSpellDamage:Hide()
+			AllStatsFrameStatSpellHeal:Hide()
+			AllStatsFrameStatSpellHit:Hide()
+			AllStatsFrameStatSpellCrit:Hide()
+			AllStatsFrameStatSpellHaste:Hide()
+			AllStatsFrameStatSpellRegen:Hide()
+			Defenses:SetPoint("TOPLEFT", Spell, "TOPLEFT", 0, -19)
+			AllStatsFrameStatArmor:SetPoint("TOPLEFT", Defenses, "BOTTOMLEFT", 18, -23)
+	end
+end
 
 function PrintStats()
 	local str = AllStatsFrameStat1;
@@ -919,7 +1071,7 @@ function PrintStats()
 			Melee:SetPoint("TOPLEFT", MyFrame, "TOPLEFT", 0, -93)
 			AllStatsFrameStatMeleeDamage:SetPoint("TOPLEFT", AllStatsFrameStat5, "BOTTOMLEFT", 0, -24)
 		end
-	if not AllStatsFrameStatMeleeDamage:IsVisible() then
+		if not AllStatsFrameStatMeleeDamage:IsVisible() then
 			texture2:Hide()
 			AllStatsFrameStatMeleeDamage:Hide()
 			AllStatsFrameStatMeleeSpeed:Hide()
@@ -940,7 +1092,7 @@ function PrintStats()
 			Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -111)
 			AllStatsFrameStatRangeDamage:SetPoint("TOPLEFT", AllStatsFrameStatMeleeExpert, "BOTTOMLEFT", 0, -21.5)
 		end
-	if not AllStatsFrameStatRangeDamage:IsVisible() then
+		if not AllStatsFrameStatRangeDamage:IsVisible() then
 			texture3:Hide()
 			AllStatsFrameStatRangeDamage:Hide()
 			AllStatsFrameStatRangeSpeed:Hide()
@@ -959,7 +1111,7 @@ function PrintStats()
 			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -92)
 			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, -21)
 		end
-	if not AllStatsFrameStatSpellDamage:IsVisible() then
+		if not AllStatsFrameStatSpellDamage:IsVisible() then
 			texture4:Hide()
 			AllStatsFrameStatSpellDamage:Hide()
 			AllStatsFrameStatSpellHeal:Hide()
@@ -980,6 +1132,43 @@ function PrintStats()
 			Defenses:SetPoint("TOPLEFT", Spell, "TOPLEFT", 0, -110)
 			AllStatsFrameStatArmor:SetPoint("TOPLEFT", AllStatsFrameStatSpellRegen, "BOTTOMLEFT", 0, -45)
 		end
+		
+		if not AllStatsFrameStatArmor:IsVisible() then
+			texture5:Hide()
+			AllStatsFrameStatArmor:Hide()
+			AllStatsFrameStatDefense:Hide()
+			AllStatsFrameStatDodge:Hide()
+			AllStatsFrameStatParry:Hide()
+			AllStatsFrameStatBlock:Hide()
+			AllStatsFrameStatResil:Hide()
+		else
+			texture5:Show()
+			AllStatsFrameStatArmor:Show()
+			AllStatsFrameStatDefense:Show()
+			AllStatsFrameStatDodge:Show()
+			AllStatsFrameStatParry:Show()
+			AllStatsFrameStatBlock:Show()
+			AllStatsFrameStatResil:Show()
+		end
+		local _, class = UnitClass("player")  -- The second return value is the unlocalized class name
+
+	if class == "PRIEST" or class == "WARLOCK" or class == "MAGE" then
+		if PaperDollFrame:IsVisible() then
+		caster_collapse()
+		end
+	elseif class == "ROGUE" or class == "WARRIOR" then
+		if PaperDollFrame:IsVisible() then
+		melee_collapse()
+		end
+	elseif class == "SHAMAN" or class == "DRUID" or class == "PALADIN" then
+		if PaperDollFrame:IsVisible() then
+		hybrid_collapse()
+		end
+	elseif class == "HUNTER" then
+		if PaperDollFrame:IsVisible() then
+		hunter_collapse()
+		end
+	end
 end
 
 local AllStatsShowFrame = true;
@@ -992,4 +1181,7 @@ function AllStatsButtonShowFrame_OnClick()
 		AllStatsFrame:Hide();
 	end
 end
+
+
+
 -- Todo MacroFrame and PlayerTalentFrame to move when character frame is open
