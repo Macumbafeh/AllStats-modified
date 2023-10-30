@@ -136,7 +136,7 @@ clickableFrame:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight")
 -- Optional: Add tooltip or cursor change for better UX
 clickableFrame:SetScript("OnEnter", function()
     GameTooltip:SetOwner(clickableFrame, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:SetText("Left Click to Hide/Show everything\nRight Click to Hide/Show the Background only", 0, 1, 1)
     GameTooltip:Show()
 end)
 clickableFrame:SetScript("OnLeave", function()
@@ -176,7 +176,7 @@ clickableFrame2:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight"
 -- Optional: Add tooltip or cursor change for better UX
 clickableFrame2:SetScript("OnEnter", function()
     GameTooltip:SetOwner(clickableFrame2, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:SetText("Left Click to Hide/Show everything\nRight Click to Hide/Show the Background only", 0, 1, 1)
     GameTooltip:Show()
 end)
 clickableFrame2:SetScript("OnLeave", function()
@@ -216,7 +216,7 @@ clickableFrame3:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight"
 -- Optional: Add tooltip or cursor change for better UX
 clickableFrame3:SetScript("OnEnter", function()
     GameTooltip:SetOwner(clickableFrame3, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:SetText("Left Click to Hide/Show everything\nRight Click to Hide/Show the Background only", 0, 1, 1)
     GameTooltip:Show()
 end)
 clickableFrame3:SetScript("OnLeave", function()
@@ -256,7 +256,7 @@ clickableFrame4:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight"
 -- Optional: Add tooltip or cursor change for better UX
 clickableFrame4:SetScript("OnEnter", function()
     GameTooltip:SetOwner(clickableFrame4, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:SetText("Left Click to Hide/Show everything\nRight Click to Hide/Show the Background only", 0, 1, 1)
     GameTooltip:Show()
 end)
 clickableFrame4:SetScript("OnLeave", function()
@@ -296,7 +296,7 @@ clickableFrame5:SetHighlightTexture("Interface\\BUTTONS\\UI-Common-MouseHilight"
 -- Optional: Add tooltip or cursor change for better UX
 clickableFrame5:SetScript("OnEnter", function()
     GameTooltip:SetOwner(clickableFrame5, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Click to Hide/Show", 1, 1, 1)
+    GameTooltip:SetText("Left Click to Hide/Show everything\nRight Click to Hide/Show the Background only", 0, 1, 1)
     GameTooltip:Show()
 end)
 clickableFrame5:SetScript("OnLeave", function()
@@ -385,7 +385,9 @@ MyButton:SetScript("OnClick", function(self)
 		 MyFrame:Show()
 		 texture:Show()
 		texture2:Show()
+		if AllStatsFrameStatRangeDamage:IsVisible() then
 		texture3:Show()
+		end
 		texture4:Show()
 		texture5:Show()
 		AllStatsFrameLabelStats:Show()
