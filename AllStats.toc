@@ -6,6 +6,7 @@
 ## Credits: Lekyaira
 ## Email: ganoran@gmail.com
 ## License: GPLv3
+## RequiredDeps: !Compatibility
 ## SavedVariables:
 
 AllStats.xml
