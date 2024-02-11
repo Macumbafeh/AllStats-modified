@@ -8,7 +8,6 @@ function AllStats_OnLoad()
 	CharacterAttributesFrame:Hide();
 	CharacterModelFrame:SetHeight(300);
 	PaperDollFrame_UpdateStats = NewPaperDollFrame_UpdateStats;
-	CharacterFrame:SetScale(1.3)
 end
 
 function NewPaperDollFrame_UpdateStats()
@@ -409,6 +408,11 @@ MyButton:SetScript("OnClick", function(self)
 		tframe4:Show()
 		tframe5:Show()
 		tframe6:Show()
+		clickableFrame4:Show()
+		clickableFrame3:Show()
+		clickableFrame2:Show()
+		clickableFrame:Show()
+		clickableFrame5:Show()
     else
         AllStatsFrame:Hide()
 		 MyFrame:Hide()
@@ -435,6 +439,11 @@ MyButton:SetScript("OnClick", function(self)
 		tframe4:Hide()
 		tframe5:Hide()
 		tframe6:Hide()
+		clickableFrame4:Hide()
+		clickableFrame3:Hide()
+		clickableFrame2:Hide()
+		clickableFrame:Hide()
+		clickableFrame5:Hide()
     end
     showTooltip(self) -- Update the tooltip
 end)
