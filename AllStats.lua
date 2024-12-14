@@ -775,6 +775,11 @@ clickableFrame2:SetScript("OnClick", function(self, button)
 			AllStatsFrameStatMeleeExpert:Show()
 			Ranged:SetPoint("TOPLEFT", Melee, "TOPLEFT", 0, -111)
 			AllStatsFrameStatRangeDamage:SetPoint("TOPLEFT", AllStatsFrameStatMeleeExpert, "BOTTOMLEFT", 0, -21.5)
+			if not AllStatsFrameStatRangeDamage:IsVisible() then
+				AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", clickableFrame4, "BOTTOMLEFT", 40, 1)
+			else
+				AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", clickableFrame4, "BOTTOMLEFT", 40, 1)
+			end
 		end
     end
 end)
@@ -799,7 +804,7 @@ clickableFrame3:SetScript("OnClick", function(self, button)
 			AllStatsFrameStatRangeHit:Hide()
 			AllStatsFrameStatRangeCrit:Hide()
 			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -19)
-			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, 52)
+			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", clickableFrame4, "BOTTOMLEFT", 40, 1)
 		else
 			frame3:Show()
 			texture3:Show()
@@ -809,7 +814,7 @@ clickableFrame3:SetScript("OnClick", function(self, button)
 			AllStatsFrameStatRangeHit:Show()
 			AllStatsFrameStatRangeCrit:Show()
 			Spell:SetPoint("TOPLEFT", Ranged, "TOPLEFT", 0, -92)
-			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", AllStatsFrameStatRangeCrit, "BOTTOMLEFT", 0, -21)
+			AllStatsFrameStatSpellDamage:SetPoint("TOPLEFT", clickableFrame4, "BOTTOMLEFT", 40, 1)
 		end
     end
 end)
